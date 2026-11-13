@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="516" viewBox="0 0 960 516" role="img" aria-labelledby="title desc">
+  <title id="title">ManjuDuo app architecture</title>
+  <desc id="desc">The SwiftUI interface uses a catalog service, an AVPlayer controller, and a local library. The catalog and playback pipelines fetch metadata and media directly from Hongguo.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8z" fill="#64748b"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #14243b; text-anchor: middle }
+      .title { font-size: 27px; font-weight: 700 }
+      .label { font-size: 19px; font-weight: 650 }
+      .detail { font-size: 15px; fill: #40536c }
+      .card { fill: #fff; stroke: #bccadb }
+      .connector { fill: none; stroke: #64748b; stroke-width: 2; marker-end: url(#arrow) }
+    </style>
+  </defs>
+  <rect x="1" y="1" width="958" height="514" rx="20" fill="#f2f6fb" stroke="#d3ddeb"/>
+  <text class="title" x="480" y="46">ManjuDuo app architecture</text>
+
+  <rect x="175" y="68" width="610" height="69" rx="12" fill="#deebff" stroke="#91b4e7"/>
+  <text class="label" x="480" y="96">SwiftUI interface</text>
+  <text class="detail" x="480" y="119">Discovery · Search · Recommendation feed · Episode selection</text>
+
+  <path class="connector" d="M320 137V152H174V176"/>
+  <path class="connector" d="M480 137V176"/>
+  <path class="connector" d="M640 137V152H786V176"/>
+
+  <rect class="card" x="34" y="180" width="280" height="89" rx="12"/>
+  <text class="label" x="174" y="210">ContentProvider</text>
+  <text class="detail" x="174" y="234">Catalog, search and share links</text>
+  <text class="detail" x="174" y="254">Episode metadata cache</text>
+
+  <rect class="card" x="340" y="180" width="280" height="89" rx="12"/>
+  <text class="label" x="480" y="210">PlayerModel · AVPlayer</text>
+  <text class="detail" x="480" y="234">Playback, seeking and speed</text>
+  <text class="detail" x="480" y="254">Resume and auto-advance</text>
+
+  <rect class="card" x="646" y="180" width="280" height="89" rx="12"/>
+  <text class="label" x="786" y="210">LibraryStore</text>
+  <text class="detail" x="786" y="234">Favorites, likes and history</text>
+  <text class="detail" x="786" y="254">Playback preferences</text>
+
+  <path class="connector" d="M480 269V300"/>
+  <path class="connector" d="M174 269V413"/>
+  <path class="connector" d="M480 386V413"/>
+
+  <rect class="card" x="340" y="304" width="280" height="82" rx="12"/>
+  <text class="label" x="480" y="333">Media pipeline</text>
+  <text class="detail" x="480" y="357">Resource lookup and streaming</text>
+  <text class="detail" x="480" y="377">Prefetch and episode disk cache</text>
+
+  <rect x="34" y="417" width="586" height="65" rx="12" fill="#e0f2ec" stroke="#8dbfae"/>
+  <text class="label" x="327" y="444">Hongguo upstream services</text>
+  <text class="detail" x="327" y="468">Catalog and episode metadata · Playback resources and media</text>
+</svg>

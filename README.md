@@ -1,9 +1,42 @@
-# 漫剧 Duo 0.1.0
+# ManjuDuo
 
-独立的 iPhone 和 iPad 漫剧客户端。支持发现、搜索、链接导入、选集、原生播放、倍速、自动下一集、追剧和续播。窄屏在视频下方显示选集，宽屏把选集放在右侧。当前集优先准备，下一集可自动预取，缓存上限约 1 GB。
+ManjuDuo (漫剧 Duo) is an independent SwiftUI app for browsing and watching Hongguo comic dramas on iPhone and iPad. It supports catalog browsing, a vertical recommendation feed, search, share-link import, episode selection, variable-speed playback, and automatic playback of the next episode.
 
-打开 ManjuDuo.xcodeproj，选择 ManjuDuo scheme。可直接在模拟器运行。安装到 iPhone 或 iPad 时，在 Signing & Capabilities 选择自己的 Team，然后选择设备并运行。部署目标为 iOS 17。
+## System design
 
-使用 scripts/check.sh 运行协议、数据解析、本地存储和媒体格式测试。项目使用 GPL-3.0-only，第三方署名见 ManjuDuo/Vendor。
+![ManjuDuo architecture showing the SwiftUI interface, catalog, playback pipeline, and local library](docs/architecture.svg)
 
-首次播放需要下载并准备当前集。可用性取决于内容来源与网络。首版支持分集缓存和本机观看历史。
+The app fetches catalog data and media from upstream services directly on the device. It uses Apple's AVFoundation for playback and requires no separately deployed backend.
+
+| Component | Responsibility |
+| --- | --- |
+| [Catalog and search](ManjuDuo/Core/ContentProvider.swift) | Reads the Hongguo catalog and episode lists, resolves supported share links, and falls back to a WKWebView-based search when a direct search request fails. Episode metadata is cached in memory and on disk. |
+| [Playback source](ManjuDuo/Core/NativePlayback.swift) | Resolves an episode ID to a playable media resource. |
+| [Player](ManjuDuo/Playback/PlayerModel.swift) | Drives AVPlayer, restores saved progress, and handles seeking, playback speed, and automatic episode advancement. |
+| [Streaming and disk cache](ManjuDuo/Playback) | Reuses cached episodes or prepared streams when available. On a cache miss, the player can open a compatible URL directly or use a custom resource loader to serve media to AVPlayer as it arrives. |
+| [Local library](ManjuDuo/Core/LibraryStore.swift) | Stores favorites, likes, and viewing history on the device. Playback preferences use UserDefaults. The optional sign-in session is stored in the [Keychain](ManjuDuo/Core/Account.swift). |
+
+The current episode takes priority. Next-episode prefetch is configurable, and the episode disk cache has a 1 GiB budget. Playback availability and startup time depend on the upstream service, media format, and network connection.
+
+## Adaptive layout
+
+- On narrow screens, the episode list appears below the video when expanded. On wide screens, it appears beside the video.
+- In the recommendation feed, playback follows the selected page after scrolling settles on iOS 18 and later. On iOS 17, the app waits for the drag to end and the page selection to stabilize.
+
+## Build and run
+
+The deployment target is iOS 17. Use Xcode 16 or later to build the project.
+
+1. Open `ManjuDuo.xcodeproj` and select the `ManjuDuo` scheme.
+2. Choose an iPhone or iPad simulator and run the app.
+3. For a physical device, select your Apple development team under **Signing & Capabilities**, then select the device and run.
+
+Run the protocol, parsing, local storage, and media-format checks from the project root.
+
+```sh
+zsh scripts/check.sh
+```
+
+## License
+
+ManjuDuo is licensed under [GPL-3.0-only](LICENSE). See the [upstream notice](ManjuDuo/Vendor/Upstream-NOTICE.md) for third-party attribution.
