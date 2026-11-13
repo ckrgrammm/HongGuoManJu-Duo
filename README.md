@@ -2,6 +2,22 @@
 
 ManjuDuo (漫剧 Duo) is an independent SwiftUI app for browsing and watching Hongguo comic dramas on iPhone and iPad. It supports catalog browsing, a vertical recommendation feed, search, share-link import, episode selection, variable-speed playback, and automatic playback of the next episode.
 
+## Screenshots
+
+### Inner screen (unfolded)
+
+| Recommendation feed | Episode player |
+| --- | --- |
+| ![Recommendation feed](screenshots/inner-feed.png) | ![Episode player](screenshots/inner-player.png) |
+
+| Full-frame playback | Fill-screen playback |
+| --- | --- |
+| ![Full-frame playback](screenshots/inner-full-frame.png) | ![Fill-screen playback](screenshots/inner-fill.png) |
+
+### Outer screen (folded)
+
+<img src="screenshots/outer-feed.png" alt="Recommendation feed on the folded outer screen" width="300">
+
 ## System design
 
 ![ManjuDuo architecture showing the SwiftUI interface, catalog, playback pipeline, and local library](docs/architecture.svg)
